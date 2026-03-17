@@ -52,8 +52,7 @@ st.markdown("""
 
 # COLE SUA CHAVE AQUI PARA TESTAR LOCALMENTE
 # Para subir para a nuvem depois, usaremos o st.secrets
-openai.api_key = "openai.api_key = st.secrets["OPENAI_API_KEY"]
-
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 # 2. Interface (Formulário)
 st.markdown("<h1>gerador de roteiros</h1>", unsafe_allow_html=True)
 st.markdown("<p>preencha as informações e receba um roteiro completo gerado por ia.</p>", unsafe_allow_html=True)
