@@ -1,12 +1,12 @@
 import streamlit as st
 import google.generativeai as genai
 
-# 1. Configuração da Página e CSS (Mantendo seu design original)
+# 1. Configuração da Página e CSS (Mantendo o design original)
 st.set_page_config(page_title="Gerador de Roteiros", layout="centered")
 
 st.markdown("""
     <style>
-    /* Forçando as cores e fontes do seu design original */
+    /* Forçando as cores e fontes do design original */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
     
     html, body, [class*="css"] {
@@ -50,7 +50,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Configurando a chave da API do Gemini puxando do cofre
+# Configurando a chave da API do Gemini puxando do cofre do Streamlit
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 # 2. Interface (Formulário)
@@ -114,8 +114,11 @@ if st.button("gerar roteiro mágico"):
             """
 
             try:
-                # Usando o modelo gratuito e rápido do Gemini
-                model = genai.GenerativeModel('gemini-1.5-flash', system_instruction="Você é um assistente especialista em roteiros virais. Responda APENAS em letras minúsculas.")
+                # Usando a versão de desenvolvedor correta e atualizada da API (2.0-flash)
+                model = genai.GenerativeModel(
+                    model_name='gemini-2.0-flash', 
+                    system_instruction="Você é um assistente especialista em roteiros virais. Responda APENAS em letras minúsculas."
+                )
                 
                 resposta = model.generate_content(system_prompt)
                 roteiro_gerado = resposta.text.lower()
