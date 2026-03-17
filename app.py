@@ -116,10 +116,9 @@ if st.button("gerar roteiro mágico"):
             try:
                 # Usando a versão de desenvolvedor correta e atualizada da API (2.0-flash)
                 model = genai.GenerativeModel(
-                    model_name='gemini-2.0-flash', 
-                    system_instruction="Você é um assistente especialista em roteiros virais. Responda APENAS em letras minúsculas."
-                )
-                
+    model_name='gemini-2.5-flash', 
+    system_instruction="Você é um assistente especialista em roteiros virais. Responda APENAS em letras minúsculas."
+)
                 resposta = model.generate_content(system_prompt)
                 roteiro_gerado = resposta.text.lower()
                 
