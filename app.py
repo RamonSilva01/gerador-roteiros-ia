@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+import google.generativeai as genai
 
 # 1. Configuração da Página e CSS (Mantendo seu design original)
 st.set_page_config(page_title="Gerador de Roteiros", layout="centered")
@@ -50,9 +50,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# COLE SUA CHAVE AQUI PARA TESTAR LOCALMENTE
-# Para subir para a nuvem depois, usaremos o st.secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Configurando a chave da API do Gemini puxando do cofre
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+
 # 2. Interface (Formulário)
 st.markdown("<h1>gerador de roteiros</h1>", unsafe_allow_html=True)
 st.markdown("<p>preencha as informações e receba um roteiro completo gerado por ia.</p>", unsafe_allow_html=True)
@@ -114,20 +114,14 @@ if st.button("gerar roteiro mágico"):
             """
 
             try:
-                resposta = openai.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[
-                        {"role": "system", "content": "Você é um assistente especialista em roteiros virais. Responda APENAS em letras minúsculas."},
-                        {"role": "user", "content": system_prompt}
-                    ],
-                    temperature=0.7
-                )
+                # Usando o modelo gratuito e rápido do Gemini
+                model = genai.GenerativeModel('gemini-1.5-flash', system_instruction="Você é um assistente especialista em roteiros virais. Responda APENAS em letras minúsculas.")
                 
-                roteiro_gerado = resposta.choices[0].message.content.lower()
+                resposta = model.generate_content(system_prompt)
+                roteiro_gerado = resposta.text.lower()
                 
                 st.success("roteiro gerado com sucesso!")
-                # st.code renderiza um bloco de código que já vem com um botão nativo de "copiar"
                 st.code(roteiro_gerado, language="markdown")
                 
             except Exception as e:
-                st.error(f"erro ao conectar com a openai: {e}")
+                st.error(f"erro ao conectar com o gemini: {e}")
